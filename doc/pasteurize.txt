@@ -3,7 +3,7 @@
 *pasteurize* *pasteurize.vim*
 
 Introduction                                    |pasteurize-intro|
-Pasting and surrounding quote marks             |pasteurize-quote-marks|
+Pasting with surrounding quote marks            |pasteurize-quote-marks|
 Secure pasting                                  |pasteurize-security|
 Mappings                                        |pasteurize-mappings|
 Settings                                        |pasteurize-settings|
@@ -33,13 +33,13 @@ This plugin is in this reference class, and makes use of the prefix "g" as a
 way to make access easier.
 
 Vim's |quoteplus| register, which stores the contents of the system clipboard,
-is somewhat tedious to access by default. As a result there have been various
+is somewhat tedious to access by default.  As a result there have been various
 approaches to make access easier:
 
-PASTING AND SURROUNDING QUOTE MARKS             *pasteurize-quote-marks*
+PASTING WITH SURROUNDING QUOTE MARKS            *pasteurize-quote-marks*
 
 In addition, this plugin always uses characterwise paste when pasting from the
-system clipboard. This is to avoid accidentally misplacing the pasted text.
+system clipboard.  This is to avoid accidentally misplacing the pasted text.
 
 First, set the |"a| register: >
     :let @a = "some text\n"
@@ -53,8 +53,8 @@ For instance, consider the following: >
 
     "^"
 
-where ^ indicates the cursor position. Suppose the user is in insert mode, and
-the intent is to paste the text between the quotes. If the text was pasted
+where ^ indicates the cursor position.  Suppose the user is in insert mode, and
+the intent is to paste the text between the quotes.  If the text was pasted
 using linewise paste CTRL-R CTRL-O a, one would obtain >
 
     some text
@@ -72,7 +72,7 @@ With normal mode paste "aP, you would obtain >
 
 The issue, of course, is that Vim treats the register as being |linewise|, so
 it creates a new line above the current one and puts the register contents
-there. This is completely fine when working within Vim, because yanking and
+there.  This is completely fine when working within Vim, because yanking and
 pasting are both aware of the characterwise versus linewise distinction.
 However, when pasting from outside of Vim, there is usually no concept of
 linewise mode.
@@ -85,23 +85,23 @@ This section describes what secure pasting is.
 Note that because Vim faithfully translates the contents of the clipboard to a
 buffer in insert and command-line modes, using <code><C-R>+</code> is
 susceptible to attacks if the contents of the clipboard cannot be fully
-trusted. This is sometimes called "clipboard hijacking". For instance, if one
+trusted.  This is sometimes called "clipboard hijacking".  For instance, if one
 copies text from a website that contains a literal escape character (i.e. the
 character with ASCII value 27, ''not'' a representation of the escape
 character such as <code><Esc></code>, which would be a five-letter string), Vim will faithfully switch to normal
-mode and begin executing normal mode commands. Some browsers hide special
+mode and begin executing normal mode commands.  Some browsers hide special
 characters when displaying a page, so it is not immediately obvious even if
-one has copied malicious text. Moreover, using clever div-tag positioning,
+one has copied malicious text.  Moreover, using clever div-tag positioning,
 even browsers that display special characters are susceptible to such attacks
-([http://thejh.net/misc/website-terminal-copy-paste proof of concept]). It is
+([http://thejh.net/misc/website-terminal-copy-paste proof of concept]).  It is
 possible to use <code><C-O>"+p</code>, <code><C-R><C-R>+</code>
 ({{help|i_CTRL-R_CTRL-R}}), and similar commands instead, which prevents
 attacks of this form.
 
 This plugin protects against certain attempts at "clipboard hijacking" in the
-terminal by never interpreting special terminal escapes. Clipboard hijacking
+terminal by never interpreting special terminal escapes.  Clipboard hijacking
 is an attack where a webpage fools the user into copying something they didn't
-intend to copy. In the terminal, this can be especially dangerous since
+intend to copy.  In the terminal, this can be especially dangerous since
 pasting can result in arbitrary commands being run.
 
 A demo of terminal clipboard hijacking created by Jann Horn can be found here:
