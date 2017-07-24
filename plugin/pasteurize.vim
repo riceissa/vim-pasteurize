@@ -78,5 +78,8 @@ xnoremap <silent> <script> <Plug>PasteurizeXCopy "+y:<C-U>call <SID>characterize
 
 nnoremap <silent> <script> <Plug>PasteurizeNPaste :<C-U>call <SID>characterize_register('+')<CR>"+gP
 cnoremap <script> <Plug>PasteurizeCPaste <C-R><C-R>+
-inoremap <silent> <script> <Plug>PasteurizeIPaste <C-G>u<C-R>=<SID>paste('+')<CR>
+
+" Fall back to the paste.vim style of pasting if 'virtualedit' is not empty
+inoremap <silent> <script> <expr> <Plug>PasteurizeIPaste &virtualedit ==# '' ? "\<Lt>C-G>u\<Lt>C-R>=<SID>paste('+')\<Lt>CR>" : "\<Lt>C-G>ux\<Lt>Esc>:\<Lt>C-U>call <SID>characterize_register('+')\<Lt>CR>\"+gP\"_s"
+
 xnoremap <silent> <script> <Plug>PasteurizeXPaste "-y:<C-U>call <SID>characterize_register('+')<CR>gv"+gp
