@@ -1,0 +1,38 @@
+*pasteurize.txt* Common User Access cut, copy, and paste
+
+INTRODUCTION                                    *pasteurize*
+
+This plugin provides Common User Access (CUA) mappings for cut, copy, and
+paste.  It is in the spirit of |mswin.vim| but clobbers fewer keybindings.
+
+MAPPINGS                                        *pasteurize-mappings*
+
+                                                *pasteurize-CTRL-C*
+CTRL-C                  Copy (yank) the visual selection into the clipboard
+                        (|quoteplus|).
+
+                                                *pasteurize-CTRL-X*
+CTRL-X                  Cut the visual selection into the clipboard
+                        (|quoteplus|).
+
+                                                *pasteurize-CTRL-V*
+CTRL-V                  Paste the contents of the clipboard (|quoteplus|).
+                        There are mappings for normal mode, insert mode,
+                        visual mode, and command-line mode.  The contents of
+                        the clipboard are never interpreted when pasting.
+
+SETTINGS                                     *pasteurize-settings*
+
+By default, this plugin strips leading and trailing newlines when copying or
+pasting.  This can be disabled with:
+>
+        let g:pasteurize_no_strip_newlines = 1
+<
+
+By default, mappings for CTRL-C, CTRL-X, and CTRL-V are enabled.  To prevent
+this (so that mappings can be defined manually), do:
+>
+        let g:pasteurize_no_mappings = 1
+<
+
+ vim:tw=78:et:ts=8:ft=help:norl:
