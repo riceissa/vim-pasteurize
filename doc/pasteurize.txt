@@ -40,35 +40,29 @@ This plugin forces characterwise paste when pasting from the system clipboard.
 This is to avoid accidentally misplacing the pasted text.
 
 To see how Vim misplaces pasted text in certain cases, we give an example.
-Begin by setting the |"a| register: >
+Begin by setting the "a register: >
     :let @a = "some text\n"
-<
 
 Alternatively, set the value of the register by calling |setreg()|: >
     :call setreg("a", "some text", "l")
-<
 
 Now consider a line containing the following, where ^ indicates the cursor
 position: >
-
     "^"
 
 Suppose the user is in insert mode, and the intent is to paste the text
 between the quotes.  If the text is pasted using CTRL-R CTRL-O a, the result
 is: >
-
     some text
     ^""
 
 instead of the intended >
-
     "some text
     ^"
 
 With normal mode paste "aP, the result is: >
     ^some text
     ""
-<
 
 The issue, of course, is that Vim treats the register as being |linewise|, so
 it creates a new line above the current one and puts the register contents
@@ -85,16 +79,16 @@ SECURE PASTING                                  *pasteurize-hijacking*
 This plugin performs secure pasting by never interpreting control characters.
 The rest of this section describes what secure pasting is.
 
-In insert and command-line modes, Vim faithfully translates the contents of
-the clipboard to a buffer.  Thus using CTRL-R + is susceptible to attacks if
-the contents of the clipboard cannot be fully trusted.  This is sometimes
-called "clipboard hijacking" or "what you see is not what you copy"
-(abbreviated "WYSINWYC").  For instance, if the user copies text from a
-webpage that contains a literal escape character (i.e. the character with
-ASCII value 27, *not* a representation of the escape character such as "<Esc>"
-or "^[", which are strings of five and two characters, respectively), Vim will
-faithfully switch to normal mode and begin executing normal mode commands.
-This is dangerous because it can result in arbitrary commands being run.
+In insert and command-line modes, Vim faithfully inputs the contents of the
+clipboard to a buffer.  Thus using CTRL-R + is susceptible to attacks if the
+contents of the clipboard cannot be fully trusted.  For instance, if the user
+copies text from a webpage that contains a literal escape character (i.e. the
+character with ASCII value 27, not a representation of the escape character
+such as "<Esc>" or "^[", which are strings of five and two characters,
+respectively), Vim will faithfully switch to normal mode and begin executing
+normal mode commands.  This is dangerous because it can result in arbitrary
+commands being run.  Attacks of this type are sometimes called "clipboard
+hijacking" or "what you see is not what you copy" (abbreviated "WYSINWYC").
 
 Some browsers hide special characters when displaying a page, so it is not
 immediately obvious even if the user has copied malicious text.  Moreover,
@@ -103,9 +97,9 @@ browsers that display special characters are susceptible to such attacks.  A
 demo of terminal clipboard hijacking created by Jann Horn can be found here:
 https://thejh.net/misc/website-terminal-copy-paste
 
-In Vim, It is possible to use CTRL-O "+p, CTRL-R CTRL-R +, and similar
-commands instead, which prevents attacks of this form by not interpreting
-control characters.  However, these commands require more keystrokes.
+In Vim, it is possible to use CTRL-O "+p, CTRL-R CTRL-R +, and similar
+commands, which prevent attacks of this form by not interpreting control
+characters.  However, these commands require more keystrokes.
 
 For more information, refer to:
 http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
