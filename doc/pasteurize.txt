@@ -106,6 +106,10 @@ http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
 
 NULL BYTES                                      *pasteurize-null*
 
+In newer versions of Vim, this plugin inserts <Nul> bytes correctly.  Older
+versions of Vim cannot correctly call |getreg()| to return a list, so the
+function is called to return a string instead, munging <Nul> bytes (they will
+show up as newlines; see |NL-used-for-Nul|).
 
 MAPPINGS                                        *pasteurize-mappings*
 
