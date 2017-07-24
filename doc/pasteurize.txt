@@ -1,6 +1,15 @@
 *pasteurize.txt* Common User Access cut, copy, and paste
 
-INTRODUCTION                                    *pasteurize*
+*pasteurize* *pasteurize.vim*
+
+Introduction                                    |pasteurize-intro|
+Pasting and surrounding quote marks             |pasteurize-quote-marks|
+Secure pasting                                  |pasteurize-security|
+Mappings                                        |pasteurize-mappings|
+Settings                                        |pasteurize-settings|
+License                                         |pasteurize-license|
+
+INTRODUCTION                                    *pasteurize-intro*
 
 This plugin provides Common User Access (CUA) mappings for cut, copy, and
 paste.  It is in the spirit of |mswin.vim| but clobbers fewer keybindings.
