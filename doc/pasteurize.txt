@@ -35,24 +35,6 @@ Vim's |quoteplus| register, which stores the contents of the system clipboard,
 is somewhat tedious to access by default. As a result there have been various
 approaches to make access easier:
 
-This plugin is in this reference class, and makes use of the prefixes "c" and
-"g" as a way to make access easier. The prefix "c" is used in normal mode and
-the prefix "g" is used in visual mode (since "c" has prior meaning); you can
-probably guess all or most of the mappings. In visual mode, only yanking
-mappings are provided, because "gp" and "gP" have prior meaning. If you would
-like to override the default meanings for "gp" and "gP", the following is one
-way to do so: >
-
-  vnoremap <expr> gp v:register !=# '"' ? '"' . v:register . 'gp' : '"+p'
-  vnoremap ""gp gp
-  vnoremap <expr> gP v:register !=# '"' ? '"' . v:register . 'gP' : '"+P'
-  vnoremap ""gP gP
-<
-
-This will access quoteplus when no register is prefixed, but will revert to
-the default meaning when a register is given, such as when typing `"xgp`.
-
-
 PASTING AND SURROUNDING QUOTE MARKS             *pasteurize-quote-marks*
 
 In addition, this plugin always uses characterwise paste when pasting from the
