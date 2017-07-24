@@ -78,5 +78,5 @@ xnoremap <silent> <script> <Plug>PasteurizeXCopy "+y:<C-U>call <SID>characterize
 
 nnoremap <silent> <script> <Plug>PasteurizeNPaste :<C-U>call <SID>characterize_register('+')<CR>"+gP
 cnoremap <script> <Plug>PasteurizeCPaste <C-R><C-R>+
-inoremap <silent> <Plug>PasteurizeIPaste <C-G>u<C-R>=<SID>paste('+')<CR>
+inoremap <silent> <script> <Plug>PasteurizeIPaste <C-G>u<C-R>=<SID>paste('+')<CR>
 xnoremap <silent> <script> <Plug>PasteurizeXPaste "-y:<C-U>call <SID>characterize_register('+')<CR>gv"+gp
