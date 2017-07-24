@@ -1,9 +1,9 @@
-if exists("g:loaded_pasteurize")
+if exists('g:loaded_pasteurize')
   finish
 endif
 let g:loaded_pasteurize = 1
 
-if !has("clipboard")
+if !has('clipboard')
   finish
 endif
 
@@ -22,35 +22,35 @@ function! s:characterize_register(reg)
   " setreg()/getreg(). The following conditional *should* fix things, but if
   " you are really worried, it's best to upgrade Vim or use the mapping from
   " $VIMRUNTIME/mswin.vim and $VIMRUNTIME/autoload/paste.vim.
-  if has('nvim') || v:version > 704 || (v:version == 704 && has("patch513"))
-    let reg_cont = getreg(a:reg, 1, 1)
+  if has('nvim') || v:version > 704 || (v:version == 704 && has('patch513'))
+    let l:reg_cont = getreg(a:reg, 1, 1)
 
     if !exists('g:pasteurize_no_strip_newlines') || !g:pasteurize_no_strip_newlines
       " Remove empty lines at the beginning and end of the register
-      while (!empty(reg_cont)) && (reg_cont[-1] ==# '')
-        call remove(reg_cont, -1)
+      while (!empty(l:reg_cont)) && (l:reg_cont[-1] ==# '')
+        call remove(l:reg_cont, -1)
       endwhile
-      while (!empty(reg_cont)) && (reg_cont[0] ==# '')
-        call remove(reg_cont, 0)
+      while (!empty(l:reg_cont)) && (l:reg_cont[0] ==# '')
+        call remove(l:reg_cont, 0)
       endwhile
     endif
   else
-    let reg_cont = getreg(a:reg)
+    let l:reg_cont = getreg(a:reg)
 
     if !exists('g:pasteurize_no_strip_newlines') || !g:pasteurize_no_strip_newlines
       " Same idea as above; remove empty lines from the beginning and end.
       " Note that because the result of calling getreg() is not a list in this
       " case, any NULLs will be converted to newlines.
-      while strpart(reg_cont, len(reg_cont)-1) == "\<NL>"
-        let reg_cont = strpart(reg_cont, 0, len(reg_cont)-1)
+      while strpart(l:reg_cont, len(l:reg_cont)-1) ==# "\<NL>"
+        let l:reg_cont = strpart(l:reg_cont, 0, len(l:reg_cont)-1)
       endwhile
-      while strpart(reg_cont, 0, 1) == "\<NL>"
-        let reg_cont = strpart(reg_cont, 1)
+      while strpart(l:reg_cont, 0, 1) ==# "\<NL>"
+        let l:reg_cont = strpart(l:reg_cont, 1)
       endwhile
     endif
   endif
 
-  call setreg(a:reg, reg_cont, 'c')
+  call setreg(a:reg, l:reg_cont, 'c')
 endfunction
 
 function! s:paste(reg)
@@ -60,11 +60,11 @@ function! s:paste(reg)
     return "\<Right>"
   else
     norm! "+gP
-    return ""
+    return ''
   endif
 endfunction
 
-if !exists("g:pasteurize_no_mappings") || !g:pasteurize_no_mappings
+if !exists('g:pasteurize_no_mappings') || !g:pasteurize_no_mappings
   xmap <C-X> <Plug>PasteurizeXCut
   xmap <C-C> <Plug>PasteurizeXCopy
   nmap <C-V> <Plug>PasteurizeNPaste
