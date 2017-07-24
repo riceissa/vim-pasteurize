@@ -1,9 +1,115 @@
 *pasteurize.txt* Common User Access cut, copy, and paste
 
-INTRODUCTION                                    *pasteurize*
+*pasteurize* *pasteurize.vim*
+
+Introduction                                    |pasteurize-intro|
+Pasting inside surrounding quote marks          |pasteurize-quote-marks|
+Secure pasting                                  |pasteurize-security|
+Null bytes                                      |pasteurize-null|
+Mappings                                        |pasteurize-mappings|
+Settings                                        |pasteurize-settings|
+History                                         |pasteurize-history|
+License                                         |pasteurize-license|
+
+INTRODUCTION                                    *pasteurize-intro*
 
 This plugin provides Common User Access (CUA) mappings for cut, copy, and
 paste.  It is in the spirit of |mswin.vim| but clobbers fewer keybindings.
+
+Vim's |quoteplus| register, which stores the contents of the system clipboard,
+is tedious to access by default.  As a result there have been various
+approaches to make access easier:
+
+  * CUA keybindings with, e.g. |mswin.vim|
+  * |clipboard-unnamedplus| to make |quoteplus| the default register for yank,
+    delete, change, and put commands
+  * Various |<Leader>| mappings
+  * |i_CTRL-R| followed by + (available by default, but only works in insert
+    mode and doesn't solve copying)
+  * Solutions that insert system clipboard contents one character at a time,
+    such as using Ctrl-Shift-v (perhaps with 'paste' enabled, as with
+    |unimpaired|'s |yo| and |yO|)
+  * System Copy: https://github.com/christoomey/vim-system-copy
+
+This plugin is in this reference class, and follows |mswin.vim| in using CUA
+keybindings.
+
+PASTING INSIDE SURROUNDING QUOTE MARKS          *pasteurize-quote-marks*
+
+This plugin forces characterwise paste when pasting from the system clipboard.
+This is to avoid accidentally misplacing the pasted text.
+
+To see how Vim misplaces pasted text in certain cases, we give an example.
+Begin by setting the "a register: >
+    :let @a = "some text\n"
+
+Alternatively, set the value of the register by calling |setreg()|: >
+    :call setreg("a", "some text", "l")
+
+Now consider a line containing the following, where ^ indicates the cursor
+position: >
+    "^"
+
+Suppose the user is in insert mode, and the intent is to paste the text
+between the quotes.  If the text is pasted using CTRL-R CTRL-O a, the result
+is: >
+    some text
+    ^""
+
+instead of the intended >
+    "some text
+    ^"
+
+With normal mode paste "aP, the result is: >
+    ^some text
+    ""
+
+The issue, of course, is that Vim treats the register as being |linewise|, so
+it creates a new line above the current one and puts the register contents
+there.  This is completely fine when working within Vim, because the
+operations are aware of the characterwise versus linewise distinction.
+However, when pasting from outside of Vim, there is usually no concept of
+linewise mode, so it makes sense to force a characterwise paste when pasting
+into Vim and a characterwise copy or cut when copying or cutting out of Vim.
+
+                                                *pasteurize-security*
+                                                *pasteurize-wysinwyc*
+SECURE PASTING                                  *pasteurize-hijacking*
+
+This plugin performs secure pasting by never interpreting control characters.
+The rest of this section describes what secure pasting is.
+
+In insert and command-line modes, Vim faithfully inputs the contents of the
+clipboard to a buffer.  Thus using CTRL-R + is susceptible to attacks if the
+contents of the clipboard cannot be fully trusted.  For instance, if the user
+copies text from a webpage that contains a literal escape character (i.e. the
+character with ASCII value 27, not a representation of the escape character
+such as "<Esc>" or "^[", which are strings of five and two characters,
+respectively), Vim will faithfully switch to normal mode and begin executing
+normal mode commands.  This is dangerous because it can result in arbitrary
+commands being run.  Attacks of this type are sometimes called "clipboard
+hijacking" or "what you see is not what you copy" (abbreviated "WYSINWYC").
+
+Some browsers hide special characters when displaying a page, so it is not
+immediately obvious even if the user has copied malicious text.  Moreover,
+using clever div-tag positioning and other CSS or JavaScript tricks, even
+browsers that display special characters are susceptible to such attacks.  A
+demo of terminal clipboard hijacking created by Jann Horn can be found here:
+https://thejh.net/misc/website-terminal-copy-paste
+
+In Vim, it is possible to use CTRL-O "+p, CTRL-R CTRL-R +, and similar
+commands, which prevent attacks of this form by not interpreting control
+characters.  However, these commands require more keystrokes.
+
+For more information, refer to:
+http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
+
+NULL BYTES                                      *pasteurize-null*
+
+In newer versions of Vim, this plugin inserts <Nul> bytes correctly.  Older
+versions of Vim cannot correctly call |getreg()| to return a list, so the
+function is called to return a string instead, munging <Nul> bytes (they will
+show up as newlines; see |NL-used-for-Nul|).
 
 MAPPINGS                                        *pasteurize-mappings*
 
@@ -21,7 +127,7 @@ CTRL-V                  Paste the contents of the clipboard (|quoteplus|).
                         visual mode, and command-line mode.  The contents of
                         the clipboard are never interpreted when pasting.
 
-SETTINGS                                     *pasteurize-settings*
+SETTINGS                                        *pasteurize-settings*
 
 By default, this plugin strips leading and trailing newlines when copying or
 pasting.  This can be disabled with:
@@ -34,5 +140,18 @@ this (so that mappings can be defined manually), do:
 >
         let g:pasteurize_no_mappings = 1
 <
+
+HISTORY                                         *pasteurize-history*
+
+This plugin is the result of various experiments occurring since 2016.
+
+  * https://github.com/riceissa/vim-safe-paste
+  * https://github.com/riceissa/vim-g-loaded-clipboard
+  * https://github.com/riceissa/vim-easy-quoteplus
+  * https://github.com/riceissa/vim-cuaccp
+
+LICENSE                                         *pasteurize-license*
+
+Same terms as Vim itself (see |license|).
 
  vim:tw=78:et:ts=8:ft=help:norl:
