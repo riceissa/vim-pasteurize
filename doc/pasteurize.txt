@@ -7,6 +7,7 @@ Pasting and surrounding quote marks             |pasteurize-quote-marks|
 Secure pasting                                  |pasteurize-security|
 Mappings                                        |pasteurize-mappings|
 Settings                                        |pasteurize-settings|
+History                                         |pasteurize-history|
 License                                         |pasteurize-license|
 
 INTRODUCTION                                    *pasteurize-intro*
@@ -127,6 +128,16 @@ this (so that mappings can be defined manually), do:
 >
         let g:pasteurize_no_mappings = 1
 <
+
+HISTORY                                         *pasteurize-history*
+
+This plugin is the result of various experiments occuring since about August
+2016.
+
+  * https://github.com/riceissa/vim-safe-paste
+  * https://github.com/riceissa/vim-g-loaded-clipboard
+  * https://github.com/riceissa/vim-easy-quoteplus
+  * https://github.com/riceissa/vim-cuaccp
 
 LICENSE                                         *pasteurize-license*
 
