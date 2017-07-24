@@ -52,40 +52,65 @@ This will access quoteplus when no register is prefixed, but will revert to
 the default meaning when a register is given, such as when typing `"xgp`.
 
 
-This plugin protects against certain attempts at "clipboard hijacking" in the
-terminal by never interpreting special terminal escapes. Clipboard hijacking
-is an attack where a webpage fools the user into copying something they didn't
-intend to copy. In the terminal, this can be especially dangerous since
-pasting can result in arbitrary commands being run.
-
-A demo of terminal clipboard hijacking can be found here:
-https://thejh.net/misc/website-terminal-copy-paste
-
-See also: http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
+PASTING AND SURROUNDING QUOTE MARKS             *pasteurize-quote-marks*
 
 In addition, this plugin always uses characterwise paste when pasting from the
 system clipboard. This is to avoid accidentally misplacing the pasted text.
+
+First, set the |"a| register: >
+    :let @a = "some text\n"
+<
+
+Alternatively, you can set the value of the register by calling |setreg()|: >
+    :call setreg("a", "some text", "l")
+<
+
 For instance, consider the following: >
 
     "^"
 
 where ^ indicates the cursor position. Suppose the user is in insert mode, and
 the intent is to paste the text between the quotes. If the text was pasted
-using linewise paste, one would obtain >
+using linewise paste CTRL-R CTRL-O a, one would obtain >
 
-    pasted test^
-    ""
+    some text
+    ^""
 
 instead of the intended >
 
-    "pasted text^"
+    "some text
+    ^"
 
-LICENSE                                         *safe-paste-license*
+With normal mode paste "aP, you would obtain >
+    ^some text
+    ""
+<
 
-Same terms as Vim itself (see |license|).
+The issue, of course, is that Vim treats the register as being |linewise|, so
+it creates a new line above the current one and puts the register contents
+there. This is completely fine when working within Vim, because yanking and
+pasting are both aware of the characterwise versus linewise distinction.
+However, when pasting from outside of Vim, there is usually no concept of
+linewise mode.
 
 
+SECURE PASTING                                  *pasteurize-security*
 
+This section describes what secure pasting is.
+
+This plugin protects against certain attempts at "clipboard hijacking" in the
+terminal by never interpreting special terminal escapes. Clipboard hijacking
+is an attack where a webpage fools the user into copying something they didn't
+intend to copy. In the terminal, this can be especially dangerous since
+pasting can result in arbitrary commands being run.
+
+A demo of terminal clipboard hijacking created by Jann Horn can be found here:
+https://thejh.net/misc/website-terminal-copy-paste
+
+See also: http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
+
+Clipboard hijacking has also been called "what you see is not what you copy"
+(abbreviated "WYSINWYC").
 
 
 
@@ -106,7 +131,7 @@ CTRL-V                  Paste the contents of the clipboard (|quoteplus|).
                         visual mode, and command-line mode.  The contents of
                         the clipboard are never interpreted when pasting.
 
-SETTINGS                                     *pasteurize-settings*
+SETTINGS                                        *pasteurize-settings*
 
 By default, this plugin strips leading and trailing newlines when copying or
 pasting.  This can be disabled with:
@@ -119,5 +144,9 @@ this (so that mappings can be defined manually), do:
 >
         let g:pasteurize_no_mappings = 1
 <
+
+LICENSE                                         *pasteurize-license*
+
+Same terms as Vim itself (see |license|).
 
  vim:tw=78:et:ts=8:ft=help:norl:
