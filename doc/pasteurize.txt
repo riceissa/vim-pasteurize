@@ -88,7 +88,7 @@ susceptible to attacks if the contents of the clipboard cannot be fully
 trusted. This is sometimes called "clipboard hijacking". For instance, if one
 copies text from a website that contains a literal escape character (i.e. the
 character with ASCII value 27, ''not'' a representation of the escape
-character such as <code><Esc></code>), Vim will faithfully switch to normal
+character such as <code><Esc></code>, which would be a five-letter string), Vim will faithfully switch to normal
 mode and begin executing normal mode commands. Some browsers hide special
 characters when displaying a page, so it is not immediately obvious even if
 one has copied malicious text. Moreover, using clever div-tag positioning,
