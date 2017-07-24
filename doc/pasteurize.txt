@@ -82,6 +82,22 @@ SECURE PASTING                                  *pasteurize-security*
 
 This section describes what secure pasting is.
 
+Note that because Vim faithfully translates the contents of the clipboard to a
+buffer in insert and command-line modes, using <code><C-R>+</code> is
+susceptible to attacks if the contents of the clipboard cannot be fully
+trusted. This is sometimes called "clipboard hijacking". For instance, if one
+copies text from a website that contains a literal escape character (i.e. the
+character with ASCII value 27, ''not'' a representation of the escape
+character such as <code><Esc></code>), Vim will faithfully switch to normal
+mode and begin executing normal mode commands. Some browsers hide special
+characters when displaying a page, so it is not immediately obvious even if
+one has copied malicious text. Moreover, using clever div-tag positioning,
+even browsers that display special characters are susceptible to such attacks
+([http://thejh.net/misc/website-terminal-copy-paste proof of concept]). It is
+possible to use <code><C-O>"+p</code>, <code><C-R><C-R>+</code>
+({{help|i_CTRL-R_CTRL-R}}), and similar commands instead, which prevents
+attacks of this form.
+
 This plugin protects against certain attempts at "clipboard hijacking" in the
 terminal by never interpreting special terminal escapes. Clipboard hijacking
 is an attack where a webpage fools the user into copying something they didn't
