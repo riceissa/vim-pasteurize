@@ -65,18 +65,18 @@ function! s:paste(reg)
 endfunction
 
 if !exists("g:pasteurize_no_mappings") || !g:pasteurize_no_mappings
-  vmap <C-X> <Plug>PasteurizeVCut
-  vmap <C-C> <Plug>PasteurizeVCopy
+  xmap <C-X> <Plug>PasteurizeVCut
+  xmap <C-C> <Plug>PasteurizeVCopy
   nmap <C-V> <Plug>PasteurizeNPaste
   cmap <C-V> <Plug>PasteurizeCPaste
   imap <C-V> <Plug>PasteurizeIPaste
-  vmap <C-V> <Plug>PasteurizeVPaste
+  xmap <C-V> <Plug>PasteurizeVPaste
 endif
 
-vnoremap <silent> <script> <Plug>PasteurizeVCut "+x:<C-U>call <SID>characterize_register('+')<CR>
-vnoremap <silent> <script> <Plug>PasteurizeVCopy "+y:<C-U>call <SID>characterize_register('+')<CR>
+xnoremap <silent> <script> <Plug>PasteurizeVCut "+x:<C-U>call <SID>characterize_register('+')<CR>
+xnoremap <silent> <script> <Plug>PasteurizeVCopy "+y:<C-U>call <SID>characterize_register('+')<CR>
 
 nnoremap <silent> <script> <Plug>PasteurizeNPaste :<C-U>call <SID>characterize_register('+')<CR>"+gP
 cnoremap <script> <Plug>PasteurizeCPaste <C-R><C-R>+
 inoremap <silent> <Plug>PasteurizeIPaste <C-G>u<C-R>=<SID>paste('+')<CR>
-vnoremap <silent> <script> <Plug>PasteurizeVPaste "-y:<C-U>call <SID>characterize_register('+')<CR>gv"+gp
+xnoremap <silent> <script> <Plug>PasteurizeVPaste "-y:<C-U>call <SID>characterize_register('+')<CR>gv"+gp
