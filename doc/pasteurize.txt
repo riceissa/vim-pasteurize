@@ -5,6 +5,7 @@
 Introduction                                    |pasteurize-intro|
 Pasting inside surrounding quote marks          |pasteurize-quote-marks|
 Secure pasting                                  |pasteurize-security|
+Null bytes                                      |pasteurize-null|
 Mappings                                        |pasteurize-mappings|
 Settings                                        |pasteurize-settings|
 History                                         |pasteurize-history|
@@ -77,41 +78,39 @@ However, when pasting from outside of Vim, there is usually no concept of
 linewise mode, so it makes sense to force a characterwise paste when pasting
 into Vim and a characterwise copy or cut when copying or cutting out of Vim.
 
-SECURE PASTING                                  *pasteurize-security*
+                                                *pasteurize-security*
+                                                *pasteurize-wysinwyc*
+SECURE PASTING                                  *pasteurize-hijacking*
 
-This section describes what secure pasting is.
+This plugin performs secure pasting by never interpreting control characters.
+The rest of this section describes what secure pasting is.
 
-Note that because Vim faithfully translates the contents of the clipboard to a
-buffer in insert and command-line modes, using <code><C-R>+</code> is
-susceptible to attacks if the contents of the clipboard cannot be fully
-trusted.  This is sometimes called "clipboard hijacking".  For instance, if one
-copies text from a website that contains a literal escape character (i.e. the
-character with ASCII value 27, ''not'' a representation of the escape
-character such as <code><Esc></code>, which would be a five-letter string), Vim will faithfully switch to normal
-mode and begin executing normal mode commands.  Some browsers hide special
-characters when displaying a page, so it is not immediately obvious even if
-one has copied malicious text.  Moreover, using clever div-tag positioning,
-even browsers that display special characters are susceptible to such attacks
-([http://thejh.net/misc/website-terminal-copy-paste proof of concept]).  It is
-possible to use <code><C-O>"+p</code>, <code><C-R><C-R>+</code>
-({{help|i_CTRL-R_CTRL-R}}), and similar commands instead, which prevents
-attacks of this form.
+In insert and command-line modes, Vim faithfully translates the contents of
+the clipboard to a buffer.  Thus using CTRL-R + is susceptible to attacks if
+the contents of the clipboard cannot be fully trusted.  This is sometimes
+called "clipboard hijacking" or "what you see is not what you copy"
+(abbreviated "WYSINWYC").  For instance, if the user copies text from a
+webpage that contains a literal escape character (i.e. the character with
+ASCII value 27, *not* a representation of the escape character such as "<Esc>"
+or "^[", which are strings of five and two characters, respectively), Vim will
+faithfully switch to normal mode and begin executing normal mode commands.
+This is dangerous because it can result in arbitrary commands being run.
 
-This plugin protects against certain attempts at "clipboard hijacking" in the
-terminal by never interpreting special terminal escapes.  Clipboard hijacking
-is an attack where a webpage fools the user into copying something they didn't
-intend to copy.  In the terminal, this can be especially dangerous since
-pasting can result in arbitrary commands being run.
-
-A demo of terminal clipboard hijacking created by Jann Horn can be found here:
+Some browsers hide special characters when displaying a page, so it is not
+immediately obvious even if the user has copied malicious text.  Moreover,
+using clever div-tag positioning and other CSS or JavaScript tricks, even
+browsers that display special characters are susceptible to such attacks.  A
+demo of terminal clipboard hijacking created by Jann Horn can be found here:
 https://thejh.net/misc/website-terminal-copy-paste
 
-See also: http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
+In Vim, It is possible to use CTRL-O "+p, CTRL-R CTRL-R +, and similar
+commands instead, which prevents attacks of this form by not interpreting
+control characters.  However, these commands require more keystrokes.
 
-Clipboard hijacking has also been called "what you see is not what you copy"
-(abbreviated "WYSINWYC").
+For more information, refer to:
+http://vim.wikia.com/wiki/Pasting_registers?useskin=monobook
 
-
+NULL BYTES                                      *pasteurize-null*
 
 
 MAPPINGS                                        *pasteurize-mappings*
