@@ -143,8 +143,7 @@ this (so that mappings can be defined manually), do:
 
 HISTORY                                         *pasteurize-history*
 
-This plugin is the result of various experiments occuring since about August
-2016.
+This plugin is the result of various experiments occurring since 2016.
 
   * https://github.com/riceissa/vim-safe-paste
   * https://github.com/riceissa/vim-g-loaded-clipboard
