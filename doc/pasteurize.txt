@@ -141,6 +141,19 @@ this (so that mappings can be defined manually), do:
         let g:pasteurize_no_mappings = 1
 <
 
+Then you can define your own mappings for example like this:
+>
+        if has('clipboard')
+          let g:pasteurize_no_mappings = 1
+          xmap x <Plug>PasteurizeXCut
+          xmap <C-C> <Plug>PasteurizeXCopy
+          nmap <C-V> <Plug>PasteurizeNPaste
+          cmap <C-V> <Plug>PasteurizeCPaste
+          imap <C-V> <Plug>PasteurizeIPaste
+          xmap <C-V> <Plug>PasteurizeXPaste
+        endif
+<
+
 HISTORY                                         *pasteurize-history*
 
 This plugin is the result of various experiments occurring since 2016.
