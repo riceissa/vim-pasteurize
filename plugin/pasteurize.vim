@@ -51,6 +51,17 @@ function! s:characterize_register(reg)
   endif
 
   call setreg(a:reg, l:reg_cont, 'c')
+
+  " The following is needed at least on Neovim in WSL2 because for some reason
+  " when copying text from the browser and pasting it into Neovim, there's a bunch
+  " of ^M control characters that litter the pasted text. So the below line just
+  " does a search-replace on all the ^M (i.e. \r) so that we never have to think
+  " about them again.
+  " l:reg_cont above can be a string or list, but substitute() wants a string only,
+  " so we first set the register temporarily using setreg() call above, so that we can
+  " call getreg() again in the line below (to get a string), then do the substitute
+  " to get rid of all the ^M, and finally we setreg() again.
+  call setreg(a:reg, substitute(getreg(a:reg, 1), '\r', '', 'g'), 'c')
 endfunction
 
 function! s:paste(reg)
